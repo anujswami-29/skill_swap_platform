@@ -1,12 +1,25 @@
-<!-- templates/index.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Skill Swap – Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <h1>Welcome to Skill Swap Platform!</h1>
-    <p><a href="/register">Register</a> | <a href="/login">Login</a></p>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Home | SkillSwap{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+  <h1 class="mb-3 rainbow-text">✨ Welcome to SkillSwap</h1>
+  <p class="lead text-muted">A community to exchange skills, grow together, and collaborate freely.</p>
+  
+  {% if not session['user_id'] %}
+    <a href="/register" class="btn btn-success mt-4 me-2">Get Started</a>
+    <a href="/login" class="btn btn-outline-light mt-4">Login</a>
+  {% else %}
+    <a href="/dashboard" class="btn btn-primary mt-4">Go to Dashboard</a>
+  {% endif %}
+</div>
+
+<style>
+  .rainbow-text:hover {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+{% endblock %}

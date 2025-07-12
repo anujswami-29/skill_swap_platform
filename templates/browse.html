@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Browse | SkillSwap{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4 rainbow-text">🔍 Find Skills & Connect</h2>
+
+<form method="GET" class="d-flex justify-content-center mb-4" action="/browse">
+  <input type="text" name="q" class="form-control w-50 me-2" placeholder="Search skill..." value="{{ query or '' }}">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+{% if users %}
+  {% for user in users %}
+    <div class="card mb-4 shadow">
+      <div class="card-body">
+        <h5 class="card-title">{{ user.name }}</h5>
+        <p><strong>📍 Location:</strong> {{ user.location or 'Unknown' }}</p>
+        <p><strong>🕒 Availability:</strong> {{ user.availability or 'Not set' }}</p>
+
+        {% if user.filtered_skills %}
+          <p><strong>Skills Offered:</strong></p>
+          <ul class="list-unstyled">
+            {% for skill in user.filtered_skills %}
+              <li class="mb-2">
+                <span class="badge bg-info text-dark me-2">{{ skill.name }}</span>
+                <form method="POST" action="/request_swap" class="d-inline">
+                  <input type="hidden" name="receiver_id" value="{{ user.id }}">
+                  <input type="hidden" name="skill_name" value="{{ skill.name }}">
+                  <button type="submit" class="btn btn-sm btn-outline-primary radium-hover">Request Swap</button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="text-center text-muted">No users found with matching skills.</p>
+{% endif %}
+
+<div class="text-center mt-4">
+  <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+</div>
+
+<style>
+  .radium-hover:hover {
+    border: 1px solid #00ff84 !important;
+    box-shadow: 0 0 6px #00ff84, 0 0 12px #00ff84;
+    color: #00ff84 !important;
+    background: transparent !important;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .rainbow-text:hover {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+{% endblock %}

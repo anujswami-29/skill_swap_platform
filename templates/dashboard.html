@@ -1,15 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-5">
-    <h2>Welcome, {{ user.name }}!</h2>
-    <p>Your email: {{ user.email }}</p>
-    <a href="/logout" class="btn btn-danger">Logout</a>
+{% extends "layout.html" %}
+{% block title %}Dashboard | SkillSwap{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4 rainbow-text">🚀 Welcome, {{ user.name }}!</h2>
+
+<div class="text-center mb-4">
+  {% if user.profile_pic %}
+    <img src="{{ url_for('static', filename='uploads/' ~ user.profile_pic) }}" width="120" class="rounded-circle shadow mb-2">
+  {% endif %}
+  <p><strong>📍 Location:</strong> {{ user.location or 'Not provided' }}</p>
+  <p><strong>⏰ Availability:</strong> {{ user.availability or 'Not set' }}</p>
+  <p><strong>🔒 Profile:</strong> {{ 'Public' if user.is_public else 'Private' }}</p>
+  <p class="text-muted">📧 {{ user.email }}</p>
+</div>
+
+<div class="row">
+  <!-- Offered Skills -->
+  <div class="col-md-6 mb-4">
+    <div class="card border-success">
+      <div class="card-header bg-success text-white fw-bold">✅ Skills You Can Offer</div>
+      <div class="card-body">
+        {% for skill in user.skills %}
+          {% if skill.is_offered %}
+            <span class="badge bg-success me-1 mb-1">{{ skill.name }}</span>
+          {% endif %}
+        {% endfor %}
+        <form method="POST" action="/add_skill" class="mt-3">
+          <input type="text" name="skill_name" class="form-control mb-2" placeholder="Offer a new skill" required>
+          <input type="hidden" name="is_offered" value="1">
+          <button type="submit" class="btn btn-outline-success w-100">Add Offered Skill</button>
+        </form>
+      </div>
+    </div>
   </div>
-</body>
-</html>
+
+  <!-- Wanted Skills -->
+  <div class="col-md-6 mb-4">
+    <div class="card border-warning">
+      <div class="card-header bg-warning fw-bold">🎯 Skills You Want to Learn</div>
+      <div class="card-body">
+        {% for skill in user.skills %}
+          {% if not skill.is_offered %}
+            <span class="badge bg-warning text-dark me-1 mb-1">{{ skill.name }}</span>
+          {% endif %}
+        {% endfor %}
+        <form method="POST" action="/add_skill" class="mt-3">
+          <input type="text" name="skill_name" class="form-control mb-2" placeholder="Want to learn..." required>
+          <input type="hidden" name="is_offered" value="0">
+          <button type="submit" class="btn btn-outline-warning w-100">Add Wanted Skill</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rainbow-text:hover {
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+{% endblock %}
