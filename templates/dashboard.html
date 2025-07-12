@@ -53,6 +53,30 @@
     </div>
   </div>
 </div>
+<!-- Feedback Section -->
+<div class="card mt-4">
+  <div class="card-header bg-info text-white fw-bold">📣 Feedback You Received</div>
+  <div class="card-body">
+    {% set received_feedbacks = user.received_feedbacks %}
+    {% if received_feedbacks %}
+      {% for fb in received_feedbacks %}
+        <div class="border p-2 mb-2 rounded">
+          <p>⭐ Rating: {{ fb.rating }} / 5</p>
+          <p>💬 "{{ fb.comment }}"</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">No feedback received yet.</p>
+    {% endif %}
+    {% if session.get('broadcast_message') %}
+  <div class="alert alert-warning text-center">
+    📢 {{ session['broadcast_message'] }}
+  </div>
+{% endif %}
+
+  </div>
+</div>
+
 
 <style>
   .rainbow-text:hover {

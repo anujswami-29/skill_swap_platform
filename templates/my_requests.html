@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Swap Requests You Sent</h2>
+
+  {% if requests and requests|length > 0 %}
+    <ul class="list-group">
+      {% for r in requests %}
+        <li class="list-group-item">
+          <strong>Skill:</strong> {{ r.skill_name }} <br>
+          <strong>To:</strong> User ID {{ r.receiver_id }} <br>
+          <strong>Status:</strong> {{ r.status }}
+
+          {% if r.status == 'pending' %}
+            <form method="POST" action="/delete_request/{{ r.id }}" style="display:inline;">
+              <button class="btn btn-sm btn-outline-danger mt-2">Delete Request</button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No requests sent.</p>
+  {% endif %}
+
+  <a href="/dashboard" class="btn btn-secondary mt-4">Back to Dashboard</a>
+</div>
+{% endblock %}

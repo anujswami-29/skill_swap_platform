@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Give Feedback | SkillSwap{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">🌟 Give Feedback</h2>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label for="rating" class="form-label">Rating (1 to 5):</label>
+      <select class="form-select" name="rating" id="rating" required>
+        <option value="">Select a rating</option>
+        <option value="5">🌟🌟🌟🌟🌟 - Excellent</option>
+        <option value="4">🌟🌟🌟🌟 - Good</option>
+        <option value="3">🌟🌟🌟 - Average</option>
+        <option value="2">🌟🌟 - Poor</option>
+        <option value="1">🌟 - Bad</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="comment" class="form-label">Comment:</label>
+      <textarea name="comment" class="form-control" rows="4" placeholder="Write your experience..." required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
+  </form>
+
+  <div class="text-center mt-4">
+    <a href="/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

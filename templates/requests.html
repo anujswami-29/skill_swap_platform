@@ -30,6 +30,8 @@
             <input type="hidden" name="action" value="reject">
             <button class="btn btn-sm btn-outline-danger radium-hover">Reject</button>
           </form>
+        {% elif r.status == 'accepted' %}
+          <a href="/feedback/{{ r.id }}" class="btn btn-sm btn-info mt-2">Give Feedback</a>
         {% endif %}
       </li>
     {% endfor %}
